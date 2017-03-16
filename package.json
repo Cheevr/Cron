@@ -1,0 +1,36 @@
+{
+  "name": "cheevr-cron",
+  "version": "1.0.0",
+  "description": "A cron framework that allows to run operations periodicallly",
+  "private": true,
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Cheevr/Cron.git"
+  },
+  "keywords": [
+    "cron",
+    "job"
+  ],
+  "author": "Ravi Gairola <ravi@cheevr.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Cheevr/Cron/issues"
+  },
+  "scripts": {
+    "test": "istanbul cover _mocha -- --recursive",
+    "test-travis": "istanbul cover _mocha --report lcovonly -- -R spec --recursive"
+  },
+  "dependencies": {
+    "cheevr-config": "https://github.com/Cheevr/Config.git",
+    "cheevr-logging": "https://github.com/Cheevr/Logging.git",
+    "lodash": "^4",
+    "moment": "^2"
+  },
+  "devDependencies": {
+    "chai": "^3",
+    "coveralls": "^2",
+    "istanbul": "^0.4",
+    "mocha": "^3"
+  }
+}
