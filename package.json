@@ -1,21 +1,25 @@
 {
-  "name": "cheevr-cron",
+  "name": "cheevr-tasks",
   "version": "1.0.0",
-  "description": "A cron framework that allows to run operations periodicallly",
+  "description": "A tasks runner framework that allows to run operations periodicallly in their own process",
   "private": true,
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Cheevr/Cron.git"
+    "url": "git+ssh://git@github.com/Cheevr/Tasks.git"
   },
   "keywords": [
     "cron",
+    "tasks",
+    "runner",
+    "interval",
+    "process",
     "job"
   ],
   "author": "Ravi Gairola <ravi@cheevr.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Cheevr/Cron/issues"
+    "url": "https://github.com/Cheevr/Tasks/issues"
   },
   "scripts": {
     "test": "istanbul cover _mocha -- --recursive",
@@ -23,9 +27,13 @@
   },
   "dependencies": {
     "cheevr-config": "https://github.com/Cheevr/Config.git",
+    "cheevr-database": "https://github.com/Cheevr/Database.git",
     "cheevr-logging": "https://github.com/Cheevr/Logging.git",
+    "fork-require": "^1",
+    "later": "^1",
     "lodash": "^4",
-    "moment": "^2"
+    "moment": "^2",
+    "shortid": "^2"
   },
   "devDependencies": {
     "chai": "^3",
