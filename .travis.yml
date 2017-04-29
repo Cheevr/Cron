@@ -1,13 +1,13 @@
 language: node_js
+sudo: true
+node_js: 7.6
 
-sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-set-default
+before_install: curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.1.deb && sudo dpkg -i --force-confnew elasticsearch-5.3.1.deb && sudo service elasticsearch restart
 
-node_js:
-  - "7.6"
-
-#cache:
-#  directories:
-#    - node_modules
-
-script: "npm run test-travis"
-after_script: "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true"
+before_script: sleep 10
+script: npm run test-travis
+after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true
