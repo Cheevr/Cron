@@ -1,5 +1,6 @@
 const config = require('cheevr-config').addDefaultConfig(__dirname, 'config');
 const Database = require('cheevr-database');
+const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
 const Logger = require('cheevr-logging');
 const path = require('path');
@@ -17,11 +18,23 @@ const log = Logger[config.tasks.logger];
  * Worker <> Runner         Each worker has one runner that it communicates with
  * Runner > Jobs            Each runner can execute multiple jobs at independent intervals (depending on the type of job)
  */
-class TaskManager {
+class TaskManager extends EventEmitter {
     constructor() {
+        super();
+        this.reload();
+        Database.on('ready', () => this.reload());
+    }
+
+    /**
+     * This will kill off any running tasks and relaunch them with the current state of the configuration.
+     */
+    reload() {
+        for (let file in this._tasks) {
+            this._tasks[file].kill();
+        }
         this._tasks = {};
         let taskDirs = config.normalizePath(cwd, config.paths.tasks);
-        Database.ready && this.scanPath(taskDirs) || Database.on('ready', () => this.scanPath(taskDirs));
+        Database.ready && this.scanPath(taskDirs);
     }
 
     /**
@@ -63,12 +76,13 @@ class TaskManager {
             this._tasks[file] = task = new Task(file);
         }
         await task.ready();
+        this.emit('added', task);
         return task;
     }
 
     /**
      * Sets up a status api for tasks.
-     * @param {express.router} router   The express router (or a compatible implementation)
+     * @param {express.Router} router   The express router (or a compatible implementation)
      * @param {string} [urlPath]        The path prefix under which the status api should be accessible
      */
     endpoint(router, urlPath = config.tasks.urlPath) {

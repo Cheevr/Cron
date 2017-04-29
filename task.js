@@ -74,6 +74,14 @@ class Task {
     }
 
     /**
+     * Will stop all workers for this tasks by setting the task to be disabled.
+     */
+    kill() {
+        this._workers.map(worker => worker.kill());
+        this._workers = [];
+    }
+
+    /**
      * Sets this task to be enabled or disabled. The state is saved in the database so that a restart will maintain
      * this settings
      * @param {boolean} enabled
@@ -81,12 +89,7 @@ class Task {
     set enabled(enabled) {
         if (this._enabled !== enabled) {
             this._enabled = enabled;
-            if (enabled) {
-                this.workersWanted = this._workersWanted;
-            } else {
-                this._workers.map(worker => worker.kill());
-                this._workers = [];
-            }
+            enabled ? this.workersWanted = this._workersWanted : this.kill();
             db.update({
                 index: config.tasks.index,
                 type: 'task',
@@ -97,7 +100,7 @@ class Task {
     }
 
     /**
-     * Returns whether this task has been enabled or not.
+     * Returns whether this task has been enabled or not. A disabled tasks will have no running workers.
      * @returns {boolean}
      */
     get enabled() {
