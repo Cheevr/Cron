@@ -46,7 +46,8 @@ class Task {
             db.get({
                 index: config.tasks.index,
                 type: 'task',
-                id: hostname + '#' + this.name
+                id: hostname + '#' + this.name,
+                ignore: 404
             }, (err, result) => {
                 if (err || !result._source) {
                     this._enabled = true;
@@ -56,7 +57,7 @@ class Task {
                         type: 'task',
                         id: hostname + '#' + this.name,
                         refresh: true,
-                        ignore: 409, // already exists
+                        ignore: 409,
                         body: {
                             file: this.file,
                             host: hostname,
@@ -88,14 +89,17 @@ class Task {
      */
     set enabled(enabled) {
         if (this._enabled !== enabled) {
-            this._enabled = enabled;
-            enabled ? this.workersWanted = this._workersWanted : this.kill();
-            db.update({
-                index: config.tasks.index,
-                type: 'task',
-                id: hostname + '#' + this.name,
-                body: { doc: { enabled }}
-            });
+            setImmediate(async () => {
+                await this.ready();
+                this._enabled = enabled;
+                enabled ? this.workersWanted = this._workersWanted : this.kill();
+                db.update({
+                    index: config.tasks.index,
+                    type: 'task',
+                    id: hostname + '#' + this.name,
+                    body: { doc: { enabled }}
+                });
+            })
         }
     }
 
@@ -128,21 +132,24 @@ class Task {
     }
 
     set workersWanted(count) {
-        this._workersWanted = count;
-        db.update({
-            index: config.tasks.index,
-            type: 'task',
-            id: hostname + '#' + this.name,
-            body: { doc: { workers: count } }
+        setImmediate(async () => {
+            this._workersWanted = count;
+            await this.ready();
+            db.update({
+                index: config.tasks.index,
+                type: 'task',
+                id: hostname + '#' + this.name,
+                body: {doc: {workers: count}}
+            });
+            if (this._enabled) {
+                for (let nr = this._workers.length; nr <= count; nr++) {
+                    this.addWorker();
+                }
+                for (let nr = this._workers.length; nr > count; nr--) {
+                    this.removeWorker();
+                }
+            }
         });
-        if (this._enabled) {
-            for (let nr = this._workers.length; nr <= count; nr++) {
-                this.addWorker();
-            }
-            for (let nr = this._workers.length; nr > count; nr--) {
-                this.removeWorker();
-            }
-        }
     }
 
     addWorker() {
