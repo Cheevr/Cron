@@ -27,6 +27,7 @@ class OnceJob extends Job {
      * @private
      */
     get nextRun() {
+        // TODO POSITIVE_INFINITY will cause setTimeout to be triggered immediately (not a problem right now since this method is called only once, but also not very clean)
         return this._hasRun ? Number.POSITIVE_INFINITY : super.nextRun;
     }
 }

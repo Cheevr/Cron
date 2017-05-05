@@ -5,14 +5,26 @@ module.exports = {
             host:'localhost:9200',
         },
         indices: {
-            tasks: {
+            status: {
                 mappings: {
                     task: {
                         properties: {
                             host: {type: 'keyword'},
                             file: {type: 'text', analyzer: 'ngram_analyzer'},
                             workers: {type: 'short'},
-                            enabled: {type: 'boolean'}
+                            enabled: {type: 'boolean'},
+                            modified: {type: 'date'}
+                        }
+                    },
+                    job: {
+                        properties: {
+                            host: {type: 'keyword'},
+                            task: {type: 'text', analyzer: 'ngram_analyzer'},
+                            name: {type: 'text', analyzer: 'ngram_analyzer'},
+                            state: {type: 'keyword'},
+                            started: {type: 'date'},
+                            finished: {type: 'date'},
+                            modified: {type: 'date'}
                         }
                     }
                 },

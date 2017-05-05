@@ -34,7 +34,7 @@ class Job {
         this._config = jobConfig;
         this._exector = executor;
         this._lastRun = 0;
-        this._state = 'idle';
+        this.state = 'idle';
 
         if (jobConfig.sleep) {
             jobConfig.sleep = Job._toInterval(jobConfig.sleep);

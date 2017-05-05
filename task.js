@@ -62,7 +62,8 @@ class Task {
                             file: this.file,
                             host: hostname,
                             workers: 1,
-                            enabled: this.enabled
+                            enabled: this.enabled,
+                            modified: Date.now()
                         }
                     }, err => resolve());
                 } else {
@@ -97,7 +98,12 @@ class Task {
                     index: config.tasks.index,
                     type: 'task',
                     id: hostname + '#' + this.name,
-                    body: { doc: { enabled }}
+                    body: {
+                        doc: {
+                            enabled,
+                            modified: Date.now()
+                        }
+                    }
                 });
             })
         }
@@ -139,7 +145,12 @@ class Task {
                 index: config.tasks.index,
                 type: 'task',
                 id: hostname + '#' + this.name,
-                body: {doc: {workers: count}}
+                body: {
+                    doc: {
+                        workers: count,
+                        modified: Date.now()
+                    }
+                }
             });
             if (this._enabled) {
                 for (let nr = this._workers.length; nr <= count; nr++) {
@@ -206,8 +217,21 @@ class Task {
      * @param {string} state    The state the worker is currently in
      */
     state(worker, jobId, state) {
-        // Reminder: states are only kept in memory
         worker.setState(jobId, state);
+        db.index({
+            index: config.tasks.index,
+            type: 'job',
+            id: hostname + '#' + this.name + '#' + jobId,
+            body: {
+                host: hostname,
+                task: this.name,
+                name: jobId,
+                state,
+                started: worker.state.started,
+                finished: worker.state.finished,
+                modified: Math.max(worker.state.started, worker.state.finished)
+            }
+        })
     }
 
     /**

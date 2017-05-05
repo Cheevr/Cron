@@ -66,6 +66,9 @@ class Runner {
      */
     job(jobConfig, executor) {
         jobConfig.name = jobConfig.name || executor.name;
+        if (!jobConfig.name.trim().length) {
+            throw new Error('No name has been given for the job. Either specify a name property or assign a named function!');
+        }
         if (this._jobs[jobConfig.name]) {
             throw new Error('A job with the given name [' + jobConfig.name + '] has already been configured')
         }
