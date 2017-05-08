@@ -1,6 +1,6 @@
-const config = require('cheevr-config').addDefaultConfig(__dirname, 'config');
+const config = require('@cheevr/config').addDefaultConfig(__dirname, 'config');
 const later = require('later');
-const Logger = require('cheevr-logging');
+const Logger = require('@cheevr/logging');
 const moment = require('moment');
 const path = require('path');
 const CronJob = require('./job.cron');

@@ -1,8 +1,8 @@
-const config = require('cheevr-config').addDefaultConfig(__dirname, 'config');
-const Database = require('cheevr-database');
+const config = require('@cheevr/config').addDefaultConfig(__dirname, 'config');
+const Database = require('@cheevr/database');
 const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
-const Logger = require('cheevr-logging');
+const Logger = require('@cheevr/logging');
 const path = require('path');
 const Task = require('./task');
 

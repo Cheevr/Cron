@@ -1,5 +1,5 @@
-const config = require('cheevr-config');
-const Logger = require('cheevr-logging');
+const config = require('@cheevr/config');
+const Logger = require('@cheevr/logging');
 const moment = require('moment');
 const path = require('path');
 

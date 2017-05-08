@@ -1,5 +1,5 @@
 /* globals describe, it, after, afterEach, before, beforeEach */
-const config = require('cheevr-config');
+const config = require('@cheevr/config');
 const expect = require('chai').expect;
 const path = require('path');
 const Tasks = require('..');

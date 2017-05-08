@@ -1,6 +1,6 @@
-const config = require('cheevr-config');
-const Database = require('cheevr-database');
-const Logger = require('cheevr-logging');
+const config = require('@cheevr/config');
+const Database = require('@cheevr/database');
+const Logger = require('@cheevr/logging');
 const path = require('path');
 const Worker = require('./worker');
 

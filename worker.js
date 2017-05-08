@@ -1,4 +1,4 @@
-const config = require('cheevr-config');
+const config = require('@cheevr/config');
 const fork = require('fork-require');
 const shortId = require('shortid');
 
