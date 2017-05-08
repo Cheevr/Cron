@@ -227,11 +227,11 @@ class Task {
                 task: this.name,
                 name: jobId,
                 state,
-                started: worker.state.started,
-                finished: worker.state.finished,
-                modified: Math.max(worker.state.started, worker.state.finished)
+                started: worker.state[jobId].started,
+                finished: worker.state[jobId].finished,
+                modified: Math.max(worker.state[jobId].started, worker.state[jobId].finished)
             }
-        })
+        });
     }
 
     /**
