@@ -138,10 +138,13 @@ class Task {
     }
 
     set workersWanted(count) {
+        if (this._workersWanted === count) {
+            return;
+        }
         setImmediate(async () => {
             this._workersWanted = count;
             await this.ready();
-            db.update({
+            await db.update({
                 index: config.tasks.index,
                 type: 'task',
                 id: hostname + '#' + this.name,
@@ -218,10 +221,11 @@ class Task {
      */
     state(worker, jobId, state) {
         worker.setState(jobId, state);
+        // TODO this doesn't account for multiple workers. Instead we could do a count for each state (e.g. running: 2)
         db.index({
             index: config.tasks.index,
             type: 'job',
-            id: hostname + '#' + this.name + '#' + jobId,
+            id: hostname + '#' + this.name +  + '#' + jobId,
             body: {
                 host: hostname,
                 task: this.name,
