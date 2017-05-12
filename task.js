@@ -217,25 +217,10 @@ class Task {
      * Sets the state of any worker.
      * @param {Worker} worker   The worker id form which the message came
      * @param {string} jobId    The job id
-     * @param {string} state    The state the worker is currently in
+     * @param {string} state    The state the worker is currently in (one of running, idle or error)
      */
     state(worker, jobId, state) {
         worker.setState(jobId, state);
-        // TODO this doesn't account for multiple workers. Instead we could do a count for each state (e.g. running: 2)
-        db.index({
-            index: config.tasks.index,
-            type: 'job',
-            id: hostname + '#' + this.name +  + '#' + jobId,
-            body: {
-                host: hostname,
-                task: this.name,
-                name: jobId,
-                state,
-                started: worker.state[jobId].started,
-                finished: worker.state[jobId].finished,
-                modified: Math.max(worker.state[jobId].started, worker.state[jobId].finished)
-            }
-        });
     }
 
     /**

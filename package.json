@@ -1,6 +1,6 @@
 {
   "name": "@cheevr/tasks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tasks runner framework that allows to run operations periodicallly in their own process",
   "main": "index.js",
   "repository": {

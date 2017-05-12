@@ -10,20 +10,15 @@ module.exports = {
                     task: {
                         properties: {
                             host: {type: 'keyword'},
-                            file: {type: 'text', analyzer: 'ngram_analyzer'},
+                            file: {
+                                type: 'text',
+                                analyzer: 'ngram_analyzer',
+                                fields: {
+                                    keyword: { ignore_above: 32, type: 'keyword' }
+                                }
+                            },
                             workers: {type: 'short'},
                             enabled: {type: 'boolean'},
-                            modified: {type: 'date'}
-                        }
-                    },
-                    job: {
-                        properties: {
-                            host: {type: 'keyword'},
-                            task: {type: 'text', analyzer: 'ngram_analyzer'},
-                            name: {type: 'text', analyzer: 'ngram_analyzer'},
-                            state: {type: 'keyword'},
-                            started: {type: 'date'},
-                            finished: {type: 'date'},
                             modified: {type: 'date'}
                         }
                     }

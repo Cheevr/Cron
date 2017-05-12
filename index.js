@@ -21,8 +21,7 @@ const log = Logger[config.tasks.logger];
 class TaskManager extends EventEmitter {
     constructor() {
         super();
-        this.reload();
-        Database.on('ready', () => this.reload());
+        Database.ready && this.reload() || Database.on('ready', () => this.reload());
     }
 
     /**
@@ -70,6 +69,7 @@ class TaskManager extends EventEmitter {
         if (!config.tasks.enabled) {
             return;
         }
+        await new Promise(resolve => Database.ready && resolve() || Database.on('ready', resolve));
         file = path.normalize(file);
         let task = this._tasks[file];
         if (!task) {
