@@ -46,7 +46,6 @@ class Worker {
     }
 
     set enabled(enabled) {
-        console.log('setting to', enabled)
         if (this._enabled !== enabled) {
             this._runner.enable(enabled);
         }
