@@ -3,5 +3,5 @@ coverage/
 logs/
 .idea/
 .travis.yml
-.nyc_coverage/
+.nyc_output/
 .gitignore
