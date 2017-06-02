@@ -14,7 +14,7 @@ module.exports = {
                                 type: 'text',
                                 analyzer: 'ngram_analyzer',
                                 fields: {
-                                    keyword: { ignore_above: 32, type: 'keyword' }
+                                    raw: { ignore_above: 64, type: 'keyword' }
                                 }
                             },
                             workers: {type: 'short'},

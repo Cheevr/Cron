@@ -1,6 +1,6 @@
 {
   "name": "@cheevr/tasks",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A tasks runner framework that allows to run operations periodicallly in their own process",
   "main": "index.js",
   "repository": {
@@ -21,8 +21,8 @@
     "url": "https://github.com/Cheevr/Tasks/issues"
   },
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive",
-    "test-travis": "istanbul cover _mocha --report lcovonly -- -R spec --recursive"
+    "test": "nyc --reporter=text --reporter=html mocha --recursive",
+    "test-travis": "nyc --reporter=text-lcov mocha --recursive | coveralls"
   },
   "dependencies": {
     "@cheevr/config": "^1",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "chai": "^3",
     "coveralls": "^2",
-    "istanbul": "^0.4",
-    "mocha": "^3"
+    "mocha": "^3",
+    "nyc": "^11"
   }
 }
