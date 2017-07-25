@@ -42,6 +42,7 @@ class Task {
             }
         });
 
+        // TODO why is this not a proper async method?
         this.ready = () => new Promise(resolve => {
             db.get({
                 index: config.tasks.index,
